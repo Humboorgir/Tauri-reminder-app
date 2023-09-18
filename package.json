@@ -11,6 +11,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.0.8",
     "@tauri-apps/api": "^1.4.0"
   },
   "devDependencies": {
