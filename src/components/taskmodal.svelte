@@ -1,35 +1,54 @@
 <script lang="ts">
-  import type Task from "./task.svelte";
   import Backdrop from "./backdrop.svelte";
+  import Input from "./input.svelte";
   import Button from "./button.svelte";
-  export let showModal: boolean;
+  import { showModal } from "../stores";
   export let addTask: Function;
 
   function handleSubmit(e: Event) {
+    e.stopPropagation();
     if (!(e.target instanceof HTMLFormElement)) {
       console.log("No event target or target is not a form element");
       return;
     }
 
-    const formData = new FormData(e.target);
-    console.log(formData);
-    addTask(formData);
+    function convertTimeStringToDate(timeString: string) {
+      const currentTime = new Date();
+      const [time, period] = timeString.split(" ");
+      const [hour, minute] = time.split(":").map(Number);
+      currentTime.setHours(hour);
+      currentTime.setMinutes(minute);
+      if (period === "PM" && hour < 12) {
+        currentTime.setHours(hour + 12);
+      }
+      return currentTime;
+    }
+
+    const data = {
+      title: (e.target.title as any).value,
+      description: e.target.description.value,
+      time: convertTimeStringToDate(e.target.time.value),
+    };
+    addTask(data);
   }
 
-  function closeModal() {
-    showModal = false;
+  function closeModal(e: Event) {
+    showModal.set(false);
   }
 </script>
 
 <Backdrop {closeModal}>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <form
+    on:click={(e) => e.stopPropagation()}
     on:submit|preventDefault={handleSubmit}
     class="bg-[#242424] rounded-md p-3 text-neutral-200 flex flex-col items-center gap-4"
   >
     <h2>What do you want me to remind you of?</h2>
-    <input name="title" placeholder="title" />
-    <input name="description" placeholder="description" />
-    <input name="time" type="time" placeholder="time" />
+    <Input name="title" placeholder="title" required />
+    <Input name="description" placeholder="description" required />
+    <Input type="time" name="time" placeholder="time" required />
     <Button>Submit</Button>
   </form>
 </Backdrop>
