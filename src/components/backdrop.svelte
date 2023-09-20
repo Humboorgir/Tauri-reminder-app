@@ -8,7 +8,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   on:click={closeModal}
-  class="absolute top-0 left-0 h-full w-full bg-black/30 flex items-center justify-center"
+  class="fixed top-0 left-0 h-full w-full bg-black/30 flex items-center justify-center"
 >
   <slot />
 </div>
