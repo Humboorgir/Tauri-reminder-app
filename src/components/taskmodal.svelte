@@ -3,6 +3,7 @@
   import Input from "./input.svelte";
   import Button from "./button.svelte";
   import { showModal } from "../stores";
+  import { scale } from "svelte/transition";
   export let addTask: Function;
 
   function handleSubmit(e: Event) {
@@ -44,6 +45,7 @@
     on:click={(e) => e.stopPropagation()}
     on:submit|preventDefault={handleSubmit}
     class="bg-[#242424] rounded-md w-[500px] max-w-full py-3 px-5 text-neutral-200 flex flex-col items-center gap-4"
+    transition:scale={{ duration: 150, start: 0.75 }}
   >
     <h2 class="text-xl">Remind me of...</h2>
     <Input className="w-full" name="title" placeholder="title" required />
