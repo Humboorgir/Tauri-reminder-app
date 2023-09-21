@@ -1,17 +1,15 @@
 <script lang="ts">
   export let title: string;
   export let description: string;
-  export let time: string | Date;
+  export let time: string;
 
-  //  formatting the time
-  const timeDate = new Date(time);
-  const hour = timeDate.getHours();
-  const minutes = timeDate.getMinutes();
-  const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const hour12 = hour % 12 || 12;
-  const amPm = hour < 12 ? "AM" : "PM";
+  //  formatting the time;
+  let hour = Number(time.split(":")[0]);
+  let minute = time.split(":")[1];
+  const zone = hour < 12 ? "AM" : "PM";
+  if (hour > 12) hour -= 12;
 
-  const timeFormatted = `${hour12}:${paddedMinutes} ${amPm}`;
+  const timeFormatted = `${hour}:${minute} ${zone}`;
 </script>
 
 <div class="relative text-neutral-200 flex items-start bg-[#3b3b3b] rounded-md p-2 w-[90vw] max-w-xl">

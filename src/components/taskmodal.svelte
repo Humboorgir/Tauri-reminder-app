@@ -13,23 +13,12 @@
       return;
     }
 
-    function convertTimeStringToDate(timeString: string) {
-      const currentTime = new Date();
-      const [time, period] = timeString.split(" ");
-      const [hour, minute] = time.split(":").map(Number);
-      currentTime.setHours(hour);
-      currentTime.setMinutes(minute);
-      if (period === "PM" && hour < 12) {
-        currentTime.setHours(hour + 12);
-      }
-      return currentTime;
-    }
-
     const data = {
       title: (e.target.title as any).value,
       description: e.target.description.value,
-      time: convertTimeStringToDate(e.target.time.value),
+      time: e.target.time.value,
     };
+    console.log(e.target.time.value);
     addTask(data);
   }
 
