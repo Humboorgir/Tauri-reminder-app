@@ -19,7 +19,7 @@
     class="h-16 w-16 bg-neutral-500 rounded-md grid place-items-center text-3xl
   mr-2 font-bold shrink-0 md:h-24 md:w-24 md:text-5xl"
   >
-    {title.split("")[0]}
+    {title.split("")[0].toUpperCase()}
   </div>
   <div class="flex flex-col w-full h-full pb-6">
     <h2 class="text-lg text-neutral-200 md:text-xl md:mb-0.5">{title}</h2>
