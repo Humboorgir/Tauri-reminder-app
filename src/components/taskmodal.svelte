@@ -43,12 +43,12 @@
   <form
     on:click={(e) => e.stopPropagation()}
     on:submit|preventDefault={handleSubmit}
-    class="bg-[#242424] rounded-md p-3 text-neutral-200 flex flex-col items-center gap-4"
+    class="bg-[#242424] rounded-md w-[500px] max-w-full py-3 px-5 text-neutral-200 flex flex-col items-center gap-4"
   >
-    <h2>What do you want me to remind you of?</h2>
-    <Input name="title" placeholder="title" required />
-    <Input name="description" placeholder="description" required />
-    <Input type="time" name="time" placeholder="time" required />
-    <Button>Submit</Button>
+    <h2 class="text-xl">Remind me of...</h2>
+    <Input className="w-full" name="title" placeholder="title" required />
+    <Input className="w-full" name="description" placeholder="description" required />
+    <Input className="w-full" type="time" name="time" placeholder="time" required />
+    <Button className="w-full">Submit</Button>
   </form>
 </Backdrop>

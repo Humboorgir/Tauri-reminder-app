@@ -14,13 +14,16 @@
   const timeFormatted = `${hour12}:${paddedMinutes} ${amPm}`;
 </script>
 
-<div class="text-neutral-200 flex items-start bg-[#3b3b3b] rounded-md p-2 mb-1.5">
-  <div class="h-16 w-16 bg-neutral-500 rounded-md grid place-items-center text-3xl mr-2 font-bold">
+<div class="relative text-neutral-200 flex items-start bg-[#3b3b3b] rounded-md p-2 w-[90vw] max-w-xl">
+  <div
+    class="h-16 w-16 bg-neutral-500 rounded-md grid place-items-center text-3xl
+  mr-2 font-bold shrink-0 md:h-24 md:w-24 md:text-5xl"
+  >
     {title.split("")[0]}
   </div>
-  <div class="flex flex-col">
-    <h2 class="text-lg text-neutral-200">{title}</h2>
-    <p class="text-xs text-neutral-400 pr-2 mb-2">{description}</p>
-    <p class="text-xs text-neutral-500 self-end">{timeFormatted}</p>
+  <div class="flex flex-col w-full h-full pb-6">
+    <h2 class="text-lg text-neutral-200 md:text-xl md:mb-0.5">{title}</h2>
+    <p class="text-xs text-neutral-400 md:text-sm md:mb-2.5 pr-2">{description}</p>
+    <p class="absolute bottom-2 text-xs text-neutral-400 self-end mt-auto">{timeFormatted}</p>
   </div>
 </div>
