@@ -3,13 +3,24 @@
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command] 
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+fn play() {
+use std::fs::File;
+use std::io::BufReader;
+use std::thread;
+use rodio::{Decoder, OutputStream, source::Source};
+
+thread::spawn(|| {
+let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+let file = BufReader::new(File::open("assets/alarm.mp3").unwrap());
+let source = Decoder::new(file).unwrap();
+stream_handle.play_raw(source.convert_samples());
+thread::sleep(std::time::Duration::from_secs(30));
+});
 }
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![play])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Task } from "./types";
   import { readTextFile, writeFile, BaseDirectory } from "@tauri-apps/api/fs";
+  import { invoke } from "@tauri-apps/api/tauri";
   import Button from "./components/button.svelte";
   import TaskComponent from "./components/task.svelte";
   import TaskModal from "./components/taskmodal.svelte";
@@ -11,16 +12,6 @@
   import sortTasks from "./lib/sortTasks";
 
   let tasks: Task[] = [];
-  let alarm: HTMLAudioElement;
-
-  window.addEventListener("click", playAudio);
-  function playAudio() {
-    // play the audio as soon as the user interacts with the window
-    // we'll change the src to start or stop it later
-    alarm.play();
-    console.log("alarm is now playing");
-    window.removeEventListener("click", playAudio);
-  }
 
   onMount(async () => {
     // read tasks from tasks.json
@@ -37,10 +28,9 @@
         tasks = tasks.slice(1);
         let taskString = JSON.stringify(tasks);
         writeFile("tasks.json", taskString, { dir: BaseDirectory.AppData });
-        alarm.src = "/alarm.mp3";
+        invoke("play");
         playing = true;
         setTimeout(() => {
-          alarm.src = "";
           playing = false;
         }, 30000);
       }
@@ -72,6 +62,4 @@
   {#if $showModal}
     <TaskModal {addTask} />
   {/if}
-
-  <audio bind:this={alarm} />
 </div>
