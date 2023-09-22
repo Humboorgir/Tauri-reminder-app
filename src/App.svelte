@@ -11,6 +11,8 @@
 
   window.addEventListener("click", playAudio);
   function playAudio() {
+    // play the audio as soon as the user interacts with the window
+    // we'll change the src to start or stop it later
     alarm.play();
     console.log("alarm is now playing");
     window.removeEventListener("click", playAudio);
@@ -72,14 +74,14 @@
 </script>
 
 <div class="bg-[#2c2c2c] min-h-screen w-screen flex flex-col items-center py-8">
-  <h1 class="font-bold text-xl text-neutral-100 w-fit mb-2">What to do next?</h1>
+  <h1 class="font-bold text-xl md:text-2xl text-neutral-100 w-fit mb-2">What to do next?</h1>
   <div class="mb-4 flex flex-col gap-2 md:gap-3">
     {#each tasks as task}
       <TaskComponent {...task} />
     {/each}
   </div>
 
-  <Button className="w-[90vw] max-w-xl py-2 md:py-3" onClick={handleClick}>Add</Button>
+  <Button className="w-[90vw] max-w-lg py-2 md:py-3" onClick={handleClick}>Add</Button>
 
   {#if $showModal}
     <TaskModal {addTask} />
