@@ -25,7 +25,6 @@
   onMount(async () => {
     // read tasks from tasks.json
     const loadedTasks = await readTextFile("tasks.json", { dir: BaseDirectory.AppData });
-    // convert text to JSON
     tasks = sortTasks(loadedTasks);
 
     let playing = false;
@@ -35,6 +34,9 @@
       // play the audio the current time equals the first tasks specified time,
       // AND if its not already playing
       if (currentTime == tasks[0].time && playing == false) {
+        tasks = tasks.slice(1);
+        let taskString = JSON.stringify(tasks);
+        writeFile("tasks.json", taskString, { dir: BaseDirectory.AppData });
         alarm.src = "/alarm.mp3";
         playing = true;
         setTimeout(() => {
