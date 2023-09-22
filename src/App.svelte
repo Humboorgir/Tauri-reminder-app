@@ -17,17 +17,35 @@
   }
 
   onMount(async () => {
+    // get the current time in the following format: 'Hour:Minute'
+    let currentDate = new Date();
+    let minute = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
+    let hour = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : currentDate.getHours();
+    let currentTime = `${hour}:${minute}`;
+
+    // read tasks from tasks.json
     const loadedTasks = await readTextFile("tasks.json", { dir: BaseDirectory.AppData });
-    tasks = JSON.parse(loadedTasks);
+    // convert text to JSON
+    let jsonTasks = JSON.parse(loadedTasks);
+    // sort tasks based on which is closer to the current time
+    jsonTasks.sort((a: Task, b: Task) => {
+      let [aHour, aMinute] = a.time.split(":");
+      let [bHour, bMinute] = b.time.split(":");
+
+      let aTotal = Number(aHour) * 60 + Number(aMinute);
+      let bTotal = Number(bHour) * 60 + Number(bMinute);
+
+      // c = current
+      let [hour, minute] = currentTime.split(":");
+      let cTimeTotal = Number(hour) * 60 + Number(minute);
+      return Math.abs(cTimeTotal - aTotal) - Math.abs(cTimeTotal - bTotal);
+    });
+
+    tasks = jsonTasks;
 
     let playing = false;
 
     setInterval(() => {
-      // get the current time in the following format: 'Hour:Minute'
-      let currentDate = new Date();
-      let minute = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
-      let hour = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : currentDate.getHours();
-      let currentTime = `${hour}:${minute}`;
       // play the audio the current time equals the first tasks specified time,
       // AND if its not already playing
       if (currentTime == tasks[0].time && playing == false) {

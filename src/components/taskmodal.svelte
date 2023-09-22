@@ -18,7 +18,6 @@
       description: e.target.description.value,
       time: e.target.time.value,
     };
-    console.log(e.target.time.value);
     addTask(data);
   }
 
