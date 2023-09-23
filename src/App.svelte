@@ -22,6 +22,7 @@
 
     setInterval(() => {
       let currentTime = getCurrentTime();
+      if (!tasks[0]?.time) return;
       // play the audio the current time equals the first tasks specified time,
       // AND if its not already playing
       if (currentTime == tasks[0].time && playing == false) {
