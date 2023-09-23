@@ -4,6 +4,7 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import Button from "./components/button.svelte";
   import TaskComponent from "./components/task.svelte";
+  import TemplateTask from "./components/templatetask.svelte";
   import TaskModal from "./components/taskmodal.svelte";
   import { showModal } from "./stores";
   import { onMount } from "svelte";
@@ -56,6 +57,9 @@
     {#each tasks as task}
       <TaskComponent {...task} />
     {/each}
+    {#if !tasks.length}
+      <TemplateTask />
+    {/if}
   </div>
 
   <Button className="w-[90vw] max-w-lg py-2 md:py-3" onClick={handleClick}>Add</Button>
