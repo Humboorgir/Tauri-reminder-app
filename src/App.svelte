@@ -41,7 +41,7 @@
     let updatedTasks = [...tasks, task];
     let updatedTasksString = JSON.stringify(updatedTasks);
     await writeFile("tasks.json", updatedTasksString, { dir: BaseDirectory.AppData });
-    tasks = updatedTasks;
+    tasks = sortTasks(updatedTasks);
   }
 
   function handleClick() {
