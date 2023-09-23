@@ -19,9 +19,10 @@
       time: e.target.time.value,
     };
     addTask(data);
+    closeModal();
   }
 
-  function closeModal(e: Event) {
+  function closeModal() {
     showModal.set(false);
   }
 </script>
