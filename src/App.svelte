@@ -53,7 +53,7 @@
 
 <div class="bg-[#2c2c2c] min-h-screen w-screen flex flex-col justify-center pb-[7%] items-center py-8">
   <h1 class="font-bold text-xl md:text-2xl text-neutral-100 w-fit mb-2">What to do next?</h1>
-  <div class="mb-3 flex flex-col gap-2 md:gap-3">
+  <div class="mb-3 flex flex-col">
     {#each tasks as task}
       <TaskComponent {...task} />
     {/each}

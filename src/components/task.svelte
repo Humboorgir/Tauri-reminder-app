@@ -12,7 +12,10 @@
   const timeFormatted = `${hour}:${minute} ${zone}`;
 </script>
 
-<div class="relative text-neutral-200 flex items-start bg-[#3b3b3b] rounded-md p-2 w-[90vw] max-w-lg">
+<div
+  class="relative text-neutral-200 flex items-start bg-[#3b3b3b] rounded-md p-2 w-[90vw] max-w-lg
+mb-2 md:mb-2.5 last-of-type:!mb-0"
+>
   <div
     class="h-16 w-16 bg-neutral-500 rounded-md grid place-items-center text-3xl
   mr-2 font-bold shrink-0 md:h-24 md:w-24 md:text-5xl"
