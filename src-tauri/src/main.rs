@@ -1,7 +1,6 @@
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+// Prevents additional console window on Windows in release
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command] 
 fn play() {
 use std::fs::File;
@@ -19,8 +18,21 @@ thread::sleep(std::time::Duration::from_secs(30));
 }
 
 fn main() {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![play])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+    use tauri::SystemTray;
+use tauri::{CustomMenuItem, SystemTrayMenu, SystemTrayMenuItem};
+let tray = SystemTray::new();
+let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+let hide = CustomMenuItem::new("hide".to_string(), "Hide");
+let tray_menu = SystemTrayMenu::new()
+  .add_item(quit)
+  .add_native_item(SystemTrayMenuItem::Separator)
+  .add_item(hide);
+let tray = SystemTray::new().with_menu(tray_menu);
+
+tauri::Builder::default()
+.system_tray(tray)
+.invoke_handler(tauri::generate_handler![play])
+.run(tauri::generate_context!())
+.expect("error while running tauri application");
+
 }
