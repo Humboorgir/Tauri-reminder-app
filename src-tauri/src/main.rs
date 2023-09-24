@@ -18,15 +18,14 @@ thread::sleep(std::time::Duration::from_secs(30));
 }
 
 fn main() {
-    use tauri::SystemTray;
-use tauri::{CustomMenuItem, SystemTrayMenu, SystemTrayMenuItem};
-let tray = SystemTray::new();
+use tauri::{CustomMenuItem, SystemTrayMenu, SystemTrayMenuItem, SystemTrayEvent, Manager, SystemTray};
 let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-let hide = CustomMenuItem::new("hide".to_string(), "Hide");
+let show = CustomMenuItem::new("show".to_string(), "Show app");
+
 let tray_menu = SystemTrayMenu::new()
   .add_item(quit)
   .add_native_item(SystemTrayMenuItem::Separator)
-  .add_item(hide);
+  .add_item(show);
 let tray = SystemTray::new().with_menu(tray_menu);
 
 tauri::Builder::default()
@@ -38,6 +37,20 @@ tauri::Builder::default()
   _ => {}
 })
 .system_tray(tray)
+.on_system_tray_event(move |app, event| match event {
+  SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+      "quit" => {
+          std::process::exit(0);
+      }
+      "show" => {
+          let w = app.get_window("main").unwrap();
+          w.show().unwrap();
+          w.set_focus().unwrap();
+      }
+      _ => {}
+  },
+  _ => {}
+})
 .invoke_handler(tauri::generate_handler![play])
 .run(tauri::generate_context!())
 .expect("error while running tauri application");
