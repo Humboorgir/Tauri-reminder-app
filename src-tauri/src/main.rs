@@ -30,6 +30,13 @@ let tray_menu = SystemTrayMenu::new()
 let tray = SystemTray::new().with_menu(tray_menu);
 
 tauri::Builder::default()
+.on_window_event(|event| match event.event() {
+  tauri::WindowEvent::CloseRequested { api, .. } => {
+    event.window().hide().unwrap();
+    api.prevent_close();
+  }
+  _ => {}
+})
 .system_tray(tray)
 .invoke_handler(tauri::generate_handler![play])
 .run(tauri::generate_context!())
