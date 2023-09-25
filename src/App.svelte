@@ -16,17 +16,16 @@
   let tasks: Task[] = [];
   let remainingTime = "";
   let playing = false;
-  let previousTask: Task = {
-    title: "",
-    description: "",
-    time: "",
-  };
 
   onMount(async () => {
     // read tasks from tasks.json
-    const loadedTasks = await readTextFile("tasks.json", { dir: BaseDirectory.AppData });
-    tasks = sortTasks(loadedTasks);
-    remainingTime = getRemainingTime(tasks[0]);
+    try {
+      const loadedTasks = await readTextFile("tasks.json", { dir: BaseDirectory.AppData });
+      tasks = sortTasks(loadedTasks);
+      remainingTime = getRemainingTime(tasks[0]);
+    } catch (err) {
+      console.log(err);
+    }
 
     setInterval(() => {
       remainingTime = getRemainingTime(tasks[0]);
