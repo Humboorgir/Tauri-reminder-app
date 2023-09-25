@@ -2,6 +2,7 @@
   export let title: string;
   export let description: string;
   export let time: string;
+  export let playing: boolean;
 
   //  formatting the time;
   let hour = Number(time.split(":")[0]);
@@ -14,7 +15,7 @@
 
 <div
   class="relative text-neutral-200 flex items-start bg-[#3b3b3b] rounded-md p-2 w-[90vw] max-w-lg
-mb-2 md:mb-2.5 last-of-type:!mb-0"
+mb-2 md:mb-2.5 last-of-type:!mb-0 {playing && 'first-of-type:animate-pulse'}"
 >
   <div
     class="h-16 w-16 bg-neutral-500 rounded-md grid place-items-center text-3xl

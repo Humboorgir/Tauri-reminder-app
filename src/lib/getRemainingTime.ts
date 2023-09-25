@@ -2,7 +2,6 @@ import type { Task } from "../types";
 import getCurrentTime from "./getCurrentTime";
 
 export default function getRemainingTime(task: Task) {
-  console.log(task);
   let [hour, minute] = task.time.split(":");
   let [cHour, cMinute, cSecond] = getCurrentTime({ includeSeconds: true }).split(":");
   // convert to seconds

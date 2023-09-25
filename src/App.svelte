@@ -16,6 +16,11 @@
   let tasks: Task[] = [];
   let remainingTime = "";
   let playing = false;
+  let previousTask: Task = {
+    title: "",
+    description: "",
+    time: "",
+  };
 
   onMount(async () => {
     // read tasks from tasks.json
@@ -26,17 +31,20 @@
     setInterval(() => {
       remainingTime = getRemainingTime(tasks[0]);
       let currentTime = getCurrentTime();
+      console.log(currentTime);
+      console.log(tasks[0].time);
       if (!tasks[0]?.time) return;
       // play the audio the current time equals the first tasks specified time,
       // AND if its not already playing
       if (currentTime == tasks[0].time && playing == false) {
         console.log("Playing");
-        tasks = tasks.slice(1);
         let taskString = JSON.stringify(tasks);
         writeFile("tasks.json", taskString, { dir: BaseDirectory.AppData });
         invoke("play");
         playing = true;
+
         setTimeout(() => {
+          tasks = tasks.slice(1);
           playing = false;
         }, 30000);
       }
@@ -57,20 +65,20 @@
 </script>
 
 <div class="bg-[#2c2c2c] min-h-screen w-screen flex flex-col justify-center pb-[7%] items-center py-8">
-  {#if tasks.length}
+  {#if tasks.length && !playing}
     <h1 class="font-bold text-xl md:text-2xl text-neutral-100 w-fit mb-1 mb:mb-2">Next task in...</h1>
     <div class="text-neutral-200 mx-auto text-sm md:text-lg mb-3 mb:mb-4">
       {remainingTime}
     </div>
   {/if}
 
-  {#if !tasks.length}
+  {#if !tasks.length && !playing}
     <h1 class="font-bold text-xl md:text-2xl text-neutral-100 w-fit mb-2">What to do next?</h1>
   {/if}
 
   <div class="mb-3 flex flex-col">
     {#each tasks as task}
-      <TaskComponent {...task} />
+      <TaskComponent {...task} {playing} />
     {/each}
 
     {#if !tasks.length}
