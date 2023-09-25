@@ -10,6 +10,7 @@
   import { onMount } from "svelte";
 
   import getCurrentTime from "./lib/getCurrentTime";
+  import getRemainingTime from "./lib/getRemainingTime";
   import sortTasks from "./lib/sortTasks";
 
   let tasks: Task[] = [];
@@ -20,8 +21,10 @@
     // read tasks from tasks.json
     const loadedTasks = await readTextFile("tasks.json", { dir: BaseDirectory.AppData });
     tasks = sortTasks(loadedTasks);
+    remainingTime = getRemainingTime(tasks[0]);
 
     setInterval(() => {
+      remainingTime = getRemainingTime(tasks[0]);
       let currentTime = getCurrentTime();
       if (!tasks[0]?.time) return;
       // play the audio the current time equals the first tasks specified time,
@@ -36,35 +39,8 @@
         setTimeout(() => {
           playing = false;
         }, 30000);
-      } else {
-        console.log("Not yet " + getCurrentTime());
       }
     }, 1000);
-
-    // update the remaining time
-    function getRemainingTime() {
-      let [hour, minute] = tasks[0].time.split(":");
-      let [cHour, cMinute] = getCurrentTime().split(":");
-      // convert to minutes
-      let total = Number(hour) * 60 + Number(minute);
-      let cTotal = Number(cHour) * 60 + Number(cMinute);
-      let remaining = total - cTotal;
-      if (remaining < 0) remaining += 12 * 60;
-      // Convert back to hours and minutes after comparison
-      let hours: Number | string = Math.floor(remaining / 60);
-      let minutes = remaining % 60;
-      let hoursLabel = hours == 1 ? "hour" : "hours";
-      let minutesLabel = minutes == 1 ? "minute" : "minutes";
-      if (hours == 0) {
-        hours = "";
-        hoursLabel = "";
-      }
-      if (hours == 0) {
-        return `${minutes} ${minutesLabel}`;
-      }
-      return `${hours} ${hoursLabel} and ${minutes} ${minutesLabel}`;
-    }
-    remainingTime = getRemainingTime();
   });
 
   async function addTask(task: Task) {
@@ -72,6 +48,7 @@
     let updatedTasksString = JSON.stringify(updatedTasks);
     await writeFile("tasks.json", updatedTasksString, { dir: BaseDirectory.AppData });
     tasks = sortTasks(updatedTasks);
+    remainingTime = getRemainingTime(tasks[0]);
   }
 
   function handleClick() {
@@ -82,7 +59,7 @@
 <div class="bg-[#2c2c2c] min-h-screen w-screen flex flex-col justify-center pb-[7%] items-center py-8">
   {#if tasks.length}
     <h1 class="font-bold text-xl md:text-2xl text-neutral-100 w-fit mb-1 mb:mb-2">Next task in...</h1>
-    <div class="text-neutral-200 mx-auto text-base md:text-xl mb-3 mb:mb-4">
+    <div class="text-neutral-200 mx-auto text-sm md:text-lg mb-3 mb:mb-4">
       {remainingTime}
     </div>
   {/if}
