@@ -27,7 +27,7 @@
       console.log(err);
     }
 
-    setInterval(() => {
+    setInterval(async () => {
       remainingTime = getRemainingTime(tasks[0]);
       let currentTime = getCurrentTime();
       console.log(currentTime);
@@ -37,8 +37,9 @@
       // AND if its not already playing
       if (currentTime == tasks[0].time && playing == false) {
         console.log("Playing");
-        let taskString = JSON.stringify(tasks);
-        writeFile("tasks.json", taskString, { dir: BaseDirectory.AppData });
+        let taskString = JSON.stringify(tasks.slice(1));
+        let t = await writeFile("tasks.json", taskString, { dir: BaseDirectory.AppData });
+        console.log(t);
         invoke("play");
         playing = true;
 
