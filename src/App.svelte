@@ -72,6 +72,10 @@
     </div>
   {/if}
 
+  {#if playing}
+    <h1 class="font-bold text-xl md:text-2xl text-neutral-100 w-fit mb-2">Time to {tasks[0].title}</h1>
+  {/if}
+
   {#if !tasks.length && !playing}
     <h1 class="font-bold text-xl md:text-2xl text-neutral-100 w-fit mb-2">What to do next?</h1>
   {/if}
